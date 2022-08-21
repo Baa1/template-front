@@ -10,14 +10,19 @@
       :headers="headers"
       :items="users"
       class="elevation-1"
+      @click:row="rowClicked"
     >
     </v-data-table>
-    <UserCard 
+    <NuxtLink 
       v-for="user in users" 
-      :key="user.id" 
-      :login="user.login" 
-      :password="user.password"
-    />
+      :key="user.id"
+      :to="`/test/${user.id}`"
+    >
+      <UserCard 
+        :login="user.login" 
+        :password="user.password"
+      />
+    </NuxtLink>
   </v-container>
 </template>
 <script>
@@ -51,7 +56,10 @@ export default {
   methods: {
     ...mapActions('users', [
       'getUsers'
-    ])
+    ]),
+    rowClicked(user) {
+      this.$router.push(`/test/${user.id}`)
+    }
   },
   async mounted() {
     await this.getUsers()
